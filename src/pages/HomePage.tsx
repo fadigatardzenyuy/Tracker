@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ShieldCheck,
@@ -12,7 +12,8 @@ import {
   PackageCheck,
 } from "lucide-react";
 
-// --- SUB-COMPONENTS (These are already responsive due to their simple nature) ---
+// --- SUB-COMPONENTS FOR VARIOUS SECTIONS ---
+
 const FeatureCard = ({
   icon,
   title,
@@ -72,35 +73,31 @@ const TestimonialCard = ({
   </div>
 );
 
-// --- Hero Background (Now responsive) ---
-const HeroBackground = () => {
-  return (
-    // The entire background container is now hidden on mobile and appears on large screens (lg) and up
-    <div className="absolute inset-0 z-0 hidden lg:block">
-      <div className="absolute left-0 top-0 h-full w-1/2">
-        <img
-          src="https://www.mcgrory.ie/wp-content/uploads/2020/04/sole-trader.jpg"
-          alt="Warehouse logistics"
-          className="h-full w-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-50 via-gray-50/80 to-transparent"></div>
-      </div>
-      <div className="absolute right-0 top-0 h-full w-1/2">
-        <img
-          src="https://www.mcgrory.ie/wp-content/uploads/2020/04/sole-trader.jpg"
-          alt="Delivery person handling a package"
-          className="h-full w-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0 bg-gradient-to-l from-gray-50 via-gray-50/80 to-transparent"></div>
-      </div>
+const HeroBackground = () => (
+  <div className="absolute inset-0 z-0 hidden lg:block">
+    <div className="absolute left-0 top-0 h-full w-1/2">
+      <img
+        src="https://www.mcgrory.ie/wp-content/uploads/2020/04/sole-trader.jpg"
+        alt="Warehouse logistics"
+        className="h-full w-full object-cover opacity-40"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-gray-50 via-gray-50/80 to-transparent"></div>
     </div>
-  );
-};
+    <div className="absolute right-0 top-0 h-full w-1/2">
+      <img
+        src="https://www.mcgrory.ie/wp-content/uploads/2020/04/sole-trader.jpg"
+        alt="Delivery person handling a package"
+        className="h-full w-full object-cover opacity-40"
+      />
+      <div className="absolute inset-0 bg-gradient-to-l from-gray-50 via-gray-50/80 to-transparent"></div>
+    </div>
+  </div>
+);
 
 // --- MAIN HOMEPAGE COMPONENT ---
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const [trackingId, setTrackingId] = React.useState("");
+  const [trackingId, setTrackingId] = useState("");
 
   const handleTrackSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,7 +108,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="bg-white">
-      {/* 1. Hero Section - Now fully responsive */}
+      {/* 1. Hero Section */}
       <section className="relative text-center py-20 md:py-28 px-4 bg-gray-50 overflow-hidden">
         <HeroBackground />
         <div className="relative z-10">
@@ -122,7 +119,6 @@ const HomePage: React.FC = () => {
             We provide a personalized concierge service. Contact us for a quote,
             and we'll handle everything.
           </p>
-          {/* Button container stacks vertically on small screens */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Link
               to="/contact"
@@ -159,7 +155,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. Statistics Section - Responsive grid */}
+      {/* 2. Statistics Section */}
       <section className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -199,7 +195,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. Why Choose Us Section - Responsive grid */}
+      {/* 3. Why Choose Us Section */}
       <section className="bg-gray-50 py-16 md:py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
@@ -210,7 +206,6 @@ const HomePage: React.FC = () => {
               Service you can trust, from people who care.
             </p>
           </div>
-          {/* Stacks to 1 column on mobile, 2 on medium, 4 on large */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <FeatureCard
               icon={<ShieldCheck size={32} />}
@@ -236,7 +231,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. How It Works Section - Responsive grid */}
+      {/* 4. How It Works Section */}
       <section id="how-it-works" className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
@@ -247,7 +242,6 @@ const HomePage: React.FC = () => {
               Shipping your goods has never been easier.
             </p>
           </div>
-          {/* Stacks to 1 column on mobile, 3 on medium */}
           <div className="grid md:grid-cols-3 gap-12">
             <StepCard
               icon={<Phone size={28} />}
@@ -271,7 +265,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. Testimonials Section - Responsive grid */}
+      {/* 5. Testimonials Section */}
       <section className="bg-gray-50 py-16 md:py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
@@ -279,7 +273,6 @@ const HomePage: React.FC = () => {
               What Our Customers Say
             </h2>
           </div>
-          {/* Stacks to 1 column on mobile, 3 on medium */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <TestimonialCard
               quote="The most reliable service I've used to send goods from Douala to my family in Bamenda. The live tracking is fantastic!"
@@ -300,7 +293,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 6. Call-to-Action Section */}
+      {/* 6. Call-to-Action (CTA) Section */}
       <section className="bg-emerald-600">
         <div className="container mx-auto px-6 py-16 text-center">
           <h2 className="text-3xl font-bold text-white">

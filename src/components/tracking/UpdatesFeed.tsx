@@ -5,10 +5,11 @@ const UpdatesFeed = ({ updates }: { updates: any[] }) => {
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-xl font-bold mb-4">Tracking History</h3>
       <ol className="relative border-l border-gray-200">
+        {/* FIXED: Removed the unused 'index' from the map function */}
         {updates
           .slice()
           .reverse()
-          .map((update, index) => (
+          .map((update) => (
             <li key={update.id} className="mb-8 ml-6">
               <span className="absolute flex items-center justify-center w-6 h-6 bg-emerald-100 rounded-full -left-3 ring-8 ring-white">
                 <CheckCircle className="w-4 h-4 text-emerald-600" />
