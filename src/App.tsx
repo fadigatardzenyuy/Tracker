@@ -1,29 +1,47 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import { AuthProvider } from "./context/AuthContext";
+import MainLayout from "./components/common/MainLayout";
+import AuthLayout from "./components/common/AuthLayout";
 import HomePage from "./pages/HomePage";
-import TrackingPage from "./pages/TrackingPage";
-import Header from "./components/Layout/Header";
-import ContactPage from "./pages/ContactPage";
-import AboutPage from "./pages/AboutPage";
-import Footer from "./components/Layout/Footer";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import SendPackagePage from "./pages/SendPackagePage";
+import OrderHistoryPage from "./pages/OrderHistoryPage";
+import TrackPackagePage from "./pages/TrackPackagePage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 function App() {
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen bg-gray-50">
-        <Header />
-        <main className="flex-grow">
-          <Routes>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route element={<MainLayout />}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/track/:trackingId" element={<TrackingPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            {/* Add other informational pages here */}
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+            <Route path="/track" element={<TrackPackagePage />} />
+            <Route
+              path="/send-package"
+              element={
+                <ProtectedRoute>
+                  <SendPackagePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/history"
+              element={
+                <ProtectedRoute>
+                  <OrderHistoryPage />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
