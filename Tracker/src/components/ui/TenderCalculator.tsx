@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-// import { Link } from "react-router-dom"; // Remove this import for standalone component
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Package,
@@ -38,7 +38,7 @@ const PACKAGE_CATEGORIES = {
     name: "Electronics",
     description: "Phones, laptops, gadgets",
     basePrice: 2500,
-    insuranceRate: 0.02, // 2% of declared value
+    insuranceRate: 0.02,
     fragileHandling: 1500,
   },
   luggage: {
@@ -98,6 +98,7 @@ const DELIVERY_OPTIONS = {
 };
 
 const TenderCalculator: React.FC = () => {
+  const navigate = useNavigate(); // Hook for navigation
   const [fromCity, setFromCity] = useState("Douala");
   const [toCity, setToCity] = useState("Yaoundé");
   const [category, setCategory] =
@@ -114,15 +115,11 @@ const TenderCalculator: React.FC = () => {
   const [requiresInsurance, setRequiresInsurance] = useState(true);
   const [isFragile, setIsFragile] = useState(false);
 
-  // Calculate distance-based pricing between cities
   const calculateDistancePrice = (from: string, to: string): number => {
-    if (from === to) return 500; // Same city delivery
-
+    if (from === to) return 500;
     const fromZone =
       CAMEROON_CITIES[from as keyof typeof CAMEROON_CITIES]?.zone;
     const toZone = CAMEROON_CITIES[to as keyof typeof CAMEROON_CITIES]?.zone;
-
-    // Zone-based pricing matrix
     const zonePricing: Record<string, Record<string, number>> = {
       coastal: {
         coastal: 1500,
@@ -188,25 +185,20 @@ const TenderCalculator: React.FC = () => {
         southern: 1200,
       },
     };
-
     return zonePricing[fromZone]?.[toZone] || 3000;
   };
 
-  // Calculate volumetric weight
   const calculateVolumetricWeight = (
     length: number,
     width: number,
     height: number
   ): number => {
-    return (length * width * height) / 5000; // Standard volumetric divisor
+    return (length * width * height) / 5000;
   };
 
-  // Main price calculation
   const calculationDetails = useMemo(() => {
     const selectedCategory = PACKAGE_CATEGORIES[category];
     const selectedSpeed = DELIVERY_OPTIONS[deliverySpeed];
-
-    // Base calculations
     const distancePrice = calculateDistancePrice(fromCity, toCity);
     const volumetricWeight = calculateVolumetricWeight(
       dimensions.length,
@@ -214,37 +206,23 @@ const TenderCalculator: React.FC = () => {
       dimensions.height
     );
     const chargeableWeight = Math.max(weight, volumetricWeight);
-
-    // Price components
     const basePrice = selectedCategory.basePrice;
-    const weightPrice = chargeableWeight * 800; // XAF per kg
+    const weightPrice = chargeableWeight * 800;
     const speedMultiplier = selectedSpeed.multiplier;
     const fragileHandling = isFragile ? selectedCategory.fragileHandling : 0;
     const insurance = requiresInsurance
       ? Math.max(declaredValue * selectedCategory.insuranceRate, 500)
       : 0;
-
-    // Subtotal calculation
     const subtotal =
       (basePrice + distancePrice + weightPrice + fragileHandling) *
       speedMultiplier;
     const total = subtotal + insurance;
-
-    // Same day delivery restrictions
     const canDeliverSameDay = fromCity === toCity;
-
     return {
-      basePrice,
-      distancePrice,
-      weightPrice,
-      chargeableWeight,
-      volumetricWeight,
-      fragileHandling,
-      insurance,
-      speedMultiplier,
-      subtotal,
       total: Math.round(total),
       canDeliverSameDay,
+      chargeableWeight,
+      volumetricWeight,
       breakdown: {
         "Base Rate": basePrice,
         Distance: distancePrice,
@@ -281,7 +259,6 @@ const TenderCalculator: React.FC = () => {
         variants={fadeInUp}
         className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
       >
-        {/* Header */}
         <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 p-6 sm:p-8 text-white">
           <div className="flex items-center justify-center mb-4">
             <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
@@ -295,12 +272,9 @@ const TenderCalculator: React.FC = () => {
             Get accurate pricing for delivery across Cameroon
           </p>
         </div>
-
         <div className="p-6 sm:p-8">
           <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
-            {/* Left Column - Form */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Route Selection */}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -313,7 +287,7 @@ const TenderCalculator: React.FC = () => {
                   <select
                     value={fromCity}
                     onChange={(e) => setFromCity(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 transition-all bg-white"
                   >
                     {Object.entries(CAMEROON_CITIES).map(([city, info]) => (
                       <option key={city} value={city}>
@@ -333,7 +307,7 @@ const TenderCalculator: React.FC = () => {
                   <select
                     value={toCity}
                     onChange={(e) => setToCity(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 transition-all bg-white"
                   >
                     {Object.entries(CAMEROON_CITIES).map(([city, info]) => (
                       <option key={city} value={city}>
@@ -343,8 +317,6 @@ const TenderCalculator: React.FC = () => {
                   </select>
                 </div>
               </div>
-
-              {/* Package Category */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-3">
                   Package Category
@@ -367,12 +339,7 @@ const TenderCalculator: React.FC = () => {
                     </button>
                   ))}
                 </div>
-                <p className="text-xs text-gray-600 mt-1">
-                  {PACKAGE_CATEGORIES[category].description}
-                </p>
               </div>
-
-              {/* Package Details */}
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -386,7 +353,7 @@ const TenderCalculator: React.FC = () => {
                     }
                     min="0.1"
                     step="0.1"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
                 <div>
@@ -403,12 +370,10 @@ const TenderCalculator: React.FC = () => {
                     }
                     min="1000"
                     step="1000"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
               </div>
-
-              {/* Dimensions */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Dimensions (cm)
@@ -424,7 +389,7 @@ const TenderCalculator: React.FC = () => {
                       }))
                     }
                     placeholder="Length"
-                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-sm"
+                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 text-sm"
                   />
                   <input
                     type="number"
@@ -436,7 +401,7 @@ const TenderCalculator: React.FC = () => {
                       }))
                     }
                     placeholder="Width"
-                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-sm"
+                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 text-sm"
                   />
                   <input
                     type="number"
@@ -448,7 +413,7 @@ const TenderCalculator: React.FC = () => {
                       }))
                     }
                     placeholder="Height"
-                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-sm"
+                    className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 text-sm"
                   />
                 </div>
                 {calculationDetails.volumetricWeight > weight && (
@@ -459,8 +424,6 @@ const TenderCalculator: React.FC = () => {
                   </p>
                 )}
               </div>
-
-              {/* Delivery Speed */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-3">
                   Delivery Speed
@@ -515,8 +478,6 @@ const TenderCalculator: React.FC = () => {
                   })}
                 </div>
               </div>
-
-              {/* Additional Options */}
               <div className="space-y-3">
                 <label className="flex items-center">
                   <input
@@ -550,25 +511,20 @@ const TenderCalculator: React.FC = () => {
                 </label>
               </div>
             </div>
-
-            {/* Right Column - Price Display */}
             <div className="lg:col-span-1">
               <div className="sticky top-6 space-y-6">
-                {/* Price Summary */}
                 <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-6 border border-emerald-200">
                   <h3 className="font-bold text-gray-800 mb-4 text-center">
                     Shipping Cost
                   </h3>
                   <div className="text-center mb-4">
                     <div className="text-4xl font-extrabold text-emerald-600">
-                      ₣{calculationDetails.total.toLocaleString()}
+                      {calculationDetails.total.toLocaleString()} XAF
                     </div>
                     <div className="text-sm text-emerald-700 mt-1">
-                      XAF (Central African Francs)
+                      Central African Francs
                     </div>
                   </div>
-
-                  {/* Cost Breakdown */}
                   <div className="space-y-2 text-sm">
                     {Object.entries(calculationDetails.breakdown).map(
                       ([label, amount]) =>
@@ -578,21 +534,20 @@ const TenderCalculator: React.FC = () => {
                             className="flex justify-between text-gray-700"
                           >
                             <span>{label}:</span>
-                            <span>₣{amount.toLocaleString()}</span>
+                            <span>{amount.toLocaleString()} XAF</span>
                           </div>
                         )
                     )}
                   </div>
-
                   <div className="border-t border-emerald-300 mt-3 pt-3">
                     <div className="flex justify-between font-bold text-emerald-800">
                       <span>Total:</span>
-                      <span>₣{calculationDetails.total.toLocaleString()}</span>
+                      <span>
+                        {calculationDetails.total.toLocaleString()} XAF
+                      </span>
                     </div>
                   </div>
                 </div>
-
-                {/* Quick Info */}
                 <div className="bg-gray-50 rounded-xl p-4 space-y-3">
                   <div className="flex items-center text-sm text-gray-600">
                     <Package size={16} className="mr-2 text-emerald-600" />
@@ -609,31 +564,18 @@ const TenderCalculator: React.FC = () => {
                     <div className="flex items-center text-sm text-gray-600">
                       <Shield size={16} className="mr-2 text-emerald-600" />
                       <span>
-                        Insured up to ₣{declaredValue.toLocaleString()}
+                        Insured up to {declaredValue.toLocaleString()} XAF
                       </span>
                     </div>
                   )}
                 </div>
-
-                {/* Action Button */}
                 <button
-                  onClick={() => {
-                    // Replace with your routing logic or callback
-                    console.log("Proceeding to send package with details:", {
-                      route: `${fromCity} → ${toCity}`,
-                      category,
-                      weight: calculationDetails.chargeableWeight,
-                      total: calculationDetails.total,
-                      deliverySpeed,
-                    });
-                    // Example: onProceed?.(calculationDetails);
-                  }}
+                  onClick={() => navigate("/send-package")}
                   className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center"
                 >
-                  Proceed to Send Package
+                  Proceed to Send Package{" "}
                   <ArrowRight size={20} className="ml-2" />
                 </button>
-
                 <p className="text-xs text-gray-500 text-center">
                   Prices include all handling fees. Final cost confirmed at
                   booking.
