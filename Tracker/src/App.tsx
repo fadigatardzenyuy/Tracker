@@ -27,6 +27,8 @@ import AllShipmentsPage from "./pages/admin/AllShipmentsPage";
 import CreateShipmentPage from "./pages/admin/CreateShipmentPage";
 import UsersPage from "./pages/admin/UsersPage";
 import SettingsPage from "./pages/admin/SettingsPage";
+import AgentsPage from "./pages/admin/AgentsPage";
+import CreateAgentPage from "./pages/admin/CreateAgentPage";
 
 function App() {
   return (
@@ -72,6 +74,8 @@ function App() {
             <Route path="shipments/:id" element={<ShipmentDetailPage />} />
             <Route path="users" element={<UsersPage />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="agents" element={<AgentsPage />} />
+            <Route path="agents/create" element={<CreateAgentPage />} />
           </Route>
         </Routes>
       </Router>

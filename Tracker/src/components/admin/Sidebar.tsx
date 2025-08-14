@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   Truck,
-  Users,
+  Users, // We can use this icon for agents
   Settings,
   LogOut,
   Package,
@@ -17,11 +17,10 @@ const Sidebar: React.FC = () => {
 
   return (
     <aside className="w-64 bg-gray-800 text-white flex flex-col h-full p-4">
+      {/* ... Header ... */}
       <div className="flex items-center space-x-2 border-b border-gray-700 pb-4 mb-4">
-        <Package className="w-8 h-8 text-emerald-500 flex-shrink-0" />
-        <span className="text-2xl font-bold whitespace-nowrap">
-          CamTrack Admin
-        </span>
+        <Package className="w-8 h-8 text-emerald-500" />
+        <span className="text-2xl font-bold">CamTrack Admin</span>
       </div>
       <nav className="flex-grow">
         <ul className="space-y-2">
@@ -47,17 +46,20 @@ const Sidebar: React.FC = () => {
               Shipments
             </NavLink>
           </li>
+
+          {/* NEW AGENTS LINK */}
           <li>
             <NavLink
-              to="/admin/users"
+              to="/admin/agents"
               className={({ isActive }) =>
                 isActive ? activeLinkClass : linkClass
               }
             >
               <Users className="mr-3" />
-              Users
+              Agents
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="/admin/settings"
@@ -71,6 +73,7 @@ const Sidebar: React.FC = () => {
           </li>
         </ul>
       </nav>
+      {/* ... Footer ... */}
       <div>
         <button className={`${linkClass} w-full`}>
           <LogOut className="mr-3" /> Logout
