@@ -69,7 +69,7 @@ const UsersPage: React.FC = () => {
         </div>
         {/* While users register themselves, an admin might still need to add one manually */}
         <Link
-          to="#" // This would link to a "Create User" page if needed
+          to="#"
           className="inline-flex items-center justify-center px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors shadow-md"
         >
           <UserPlus className="mr-2 h-5 w-5" />

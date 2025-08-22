@@ -315,18 +315,18 @@ const HomePage = () => {
 
   return (
     <div className="overflow-x-hidden">
-      <section className="relative h-screen flex items-center bg-gradient-to-br from-white via-emerald-50/20 to-slate-50 overflow-hidden px-4 sm:px-6">
+      <section className="relative h-screen flex items-center bg-gradient-to-br from-white via-emerald-50/20 to-slate-50 overflow-hidden px-4 sm:px-8">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-1/4 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 bg-emerald-300 rounded-full blur-3xl" />
           <div className="absolute bottom-20 right-1/4 w-48 h-48 sm:w-72 sm:h-72 lg:w-96 lg:h-96 bg-blue-300 rounded-full blur-3xl" />
         </div>
         <div className="container mx-auto relative z-10 py-8 sm:py-12 lg:py-16">
-          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center justify-center h-full max-w-7xl mx-auto">
+          <div className="flex flex-col items-center justify-center h-full max-w-7xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-center lg:text-left w-full"
+              className="text-center w-full"
             >
               <div className="inline-flex items-center bg-emerald-100 text-emerald-700 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6 border border-emerald-200">
                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full mr-2 animate-pulse" />
@@ -341,12 +341,12 @@ const HomePage = () => {
                 </span>{" "}
                 <br /> <span className="text-gray-700">in Cameroon</span>
               </h1>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
                 Connect every corner of Cameroon with our reliable delivery
                 network. From Douala to Bamenda, from Yaoundé to Kribi - we
                 deliver with care, speed, and complete transparency.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-6 sm:mb-8">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center mb-6 sm:mb-8">
                 <Link
                   to="/send-package"
                   className="group inline-flex items-center justify-center bg-emerald-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base lg:text-lg font-semibold rounded-lg sm:rounded-xl hover:bg-emerald-700 transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
@@ -368,8 +368,8 @@ const HomePage = () => {
                   Track Shipment
                 </Link>
               </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/50 max-w-md mx-auto lg:mx-0">
-                <h3 className="text-xs sm:text-sm font-semibold text-gray-700 mb-3 flex items-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-white/50 max-w-md mx-auto">
+                <h3 className="text-xs sm:text-sm font-semibold text-gray-700 mb-3 flex items-center justify-center">
                   <Package className="mr-2 text-emerald-600" size={14} />
                   Quick Package Tracking
                 </h3>
@@ -395,14 +395,6 @@ const HomePage = () => {
                   Get real-time updates on your package location
                 </p>
               </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative h-full flex items-center order-1 lg:order-2"
-            >
-              <ImageSlider />
             </motion.div>
           </div>
         </div>
